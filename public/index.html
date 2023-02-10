@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>APH Cover Art Downloader</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link href="./styles/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container-lg">
+        <div class="mx-auto">
+            <form>
+                <div class="form-group">
+                    <label id="label" for="form-control">Directions: Paste list of ISBN numbers below separated by a
+                        line break.
+                        ISBN10 & ISBN13 compatible.</label>
+                    <textarea class="form-control rounded-0 p-2" id="isbnField" rows="10"></textarea>
+                    <button class="btn btn-primary" type="submit" value="Submit" id="post">SUBMIT</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous">
+    </script>
+    <script>
+        const postButton = document.getElementById('post')
+        const input = document.getElementById('isbnField')
+
+        postButton.addEventListener('click', postInfo);
+
+        async function postInfo(e) {
+            let isbn = (function () {
+                var textareaValue = input.value; // 'bob\ntim\nsally';
+                var isbnNumbers = textareaValue.split('\n');
+                for (i in isbnNumbers) {
+                    String(isbnNumbers[i])
+                }
+                return isbnNumbers
+            })();
+            const res = await fetch('/', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    parcel: isbn
+                })
+            })
+        }
+    </script>
+</body>
+
+</html>
